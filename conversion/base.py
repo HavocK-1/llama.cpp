@@ -1554,6 +1554,9 @@ class TextModel(ModelBase):
         if chkhsh == "63b97e4253352e6f357cc59ea5b583e3a680eaeaf2632188c2b952de2588485e":
             # ref: https://huggingface.co/mistralai/Mistral-Nemo-Base-2407
             res = "tekken"
+        if chkhsh == "77598ca96010f077ea9b33ee6c587992441d91dc89d9047a722fc8448580da11":
+            # ref: https://huggingface.co/mistralai/Ministral-3B-Instruct-2512 (Tekken BPE)
+            res = "tekken"
         if chkhsh == "855059429035d75a914d1eda9f10a876752e281a054a7a3d421ef0533e5b6249":
             # ref: https://huggingface.co/HuggingFaceTB/SmolLM-135M
             res = "smollm"

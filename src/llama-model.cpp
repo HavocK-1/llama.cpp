@@ -2434,6 +2434,17 @@ llama_rope_type llama_model_rope_type(const llama_model * model) {
         case LLM_ARCH_KIMI_LINEAR:
             return LLAMA_ROPE_TYPE_NONE;
 
+        // DeepSeek arch may be converted from a Mistral-family base with
+        // non-square attention (head_dim != n_embd/n_head) -> GPT-NeoX RoPE
+        case LLM_ARCH_DEEPSEEK: {
+            const auto & h = model->hparams;
+            if (h.n_embd_head_k_full != 0 && h.n_head() != 0 &&
+                h.n_embd_head_k_full != h.n_embd / h.n_head()) {
+                return LLAMA_ROPE_TYPE_NEOX;
+            }
+            return LLAMA_ROPE_TYPE_NORM;
+        }
+
         // use what we call a normal RoPE, operating on pairs of consecutive head values
         case LLM_ARCH_LLAMA:
         case LLM_ARCH_LLADA:
@@ -2449,7 +2460,6 @@ llama_rope_type llama_model_rope_type(const llama_model * model) {
         case LLM_ARCH_COHERE2MOE:
         case LLM_ARCH_OLMO:
         case LLM_ARCH_ARCTIC:
-        case LLM_ARCH_DEEPSEEK:
         case LLM_ARCH_DEEPSEEK2:
         case LLM_ARCH_DEEPSEEK2OCR:
         case LLM_ARCH_DEEPSEEK32:
